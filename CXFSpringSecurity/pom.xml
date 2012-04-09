@@ -1,0 +1,197 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- ===================================================================== -->
+  <!-- ~~~~~~~~~~ APP INFO -->
+  <!-- ===================================================================== -->
+  <groupId>com.blimen.labs</groupId>
+  <artifactId>cxf-spring-security</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>CXF Spring Security Lab</name>
+  <description>
+    CXF Service with Usernametoken authentication integrated with Spring 
+    Security
+  </description>
+
+  <!-- ===================================================================== -->
+  <!-- ~~~~~~~~~~ PROPERTIES -->
+  <!-- ===================================================================== -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <org.apache.cxf.version>2.5.2</org.apache.cxf.version>
+    <org.apache.ws.security.version>1.6.5</org.apache.ws.security.version>
+    <org.springframework.version>3.1.0.RELEASE</org.springframework.version>
+    <org.slf4j.version>1.6.4</org.slf4j.version>
+    <ch.qos.logback.version>1.0.1</ch.qos.logback.version>
+  </properties>
+
+  <!-- ===================================================================== -->
+  <!-- ~~~~~~~~~~ DEPENDENCIES -->
+  <!-- ===================================================================== -->
+  <dependencies>
+    <!-- ~~~~~~~~~~ CXF -->
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-api</artifactId>
+      <version>${org.apache.cxf.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxws</artifactId>
+      <version>${org.apache.cxf.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http</artifactId>
+      <version>${org.apache.cxf.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-ws-security</artifactId>
+      <version>${org.apache.cxf.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- ~~~~~~~~~~ WSS4J -->
+    <dependency>
+      <groupId>org.apache.ws.security</groupId>
+      <artifactId>wss4j</artifactId>
+      <version>${org.apache.ws.security.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    
+    <!-- ~~~~~~~~~~ WS SUPPORT -->
+    <dependency>
+      <groupId>org.apache.neethi</groupId>
+      <artifactId>neethi</artifactId>
+      <version>3.0.1</version>
+      <scope>runtime</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.apache.ws.xmlschema</groupId>
+      <artifactId>xmlschema-core</artifactId>
+      <version>2.0.1</version>
+      <scope>runtime</scope>
+    </dependency>
+    
+    <!-- ~~~~~~~~~~ SPRING -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${org.springframework.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>${org.springframework.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${org.springframework.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-core</artifactId>
+      <version>${org.springframework.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-config</artifactId>
+      <version>${org.springframework.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-web</artifactId>
+      <version>${org.springframework.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- ~~~~~~~~~~ LOGGER -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>${org.slf4j.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${ch.qos.logback.version}</version>
+    </dependency>
+    
+  </dependencies>
+
+  <!-- ===================================================================== -->
+  <!-- ~~~~~~~~~~ BUILD -->
+  <!-- ===================================================================== -->
+  <build>
+    <plugins>
+      <!-- ~~~~~~~~~~ COMPILER -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+          <compilerArgument>-Xlint:unchecked</compilerArgument>
+          <showWarnings>true</showWarnings>
+        </configuration>
+      </plugin>
+      <!-- ~~~~~~~~~~ WSDL2JAVA -->
+      <plugin>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-codegen-plugin</artifactId>
+        <version>${org.apache.cxf.version}</version>
+        <executions>
+          <execution>
+            <configuration>
+              <defaultOptions>
+                <bindingFiles>
+                  <bindingFile>${basedir}/src/main/resources/wsdl/jaxb-binding.xml</bindingFile>
+                </bindingFiles>
+              </defaultOptions>
+              <wsdlOptions>
+                <wsdlOption>
+                  <wsdl>${basedir}/src/main/resources/wsdl/hr.wsdl</wsdl>
+                </wsdlOption>
+              </wsdlOptions>
+            </configuration>
+            <goals>
+              <goal>wsdl2java</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
